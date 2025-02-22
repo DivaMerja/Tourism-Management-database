@@ -1,0 +1,58 @@
+# Tourism Management System (DBMS Project)
+
+## Overview
+The **Tourism Management System** is a database-driven application designed to streamline tourism operations, ensuring efficient handling of reservations, customer management, and data analytics. The system integrates **Entity-Relationship (ER) modeling, relational schemas, SQL-based queries, and normalization techniques** to provide a robust database solution.
+
+## Features
+- **ER Model Implementation** – Structured entity relationships for users, hotels, bookings, and travel agents.
+- **Database Schema Design** – Properly normalized relational database for optimized data storage.
+- **Complex SQL Queries** – Includes **joins, views, triggers, cursors, and constraints** for efficient data manipulation.
+- **Concurrency & Recovery Mechanisms** – Implements **ACID properties, transactions, and rollback/savepoint features** for data integrity.
+- **Data Analytics & Reporting** – Provides insights on **booking trends, customer behavior, and travel patterns**.
+
+## Technologies Used
+- **Database**: MySQL / PostgreSQL
+- **Backend**: SQL Queries, Stored Procedures
+- **Tools Used**: MySQL Workbench, phpMyAdmin
+
+## Installation & Setup
+### Prerequisites
+Ensure you have **MySQL Server** installed. To set up the database, follow these steps:
+
+1. Clone the repository:
+```bash
+git clone https://github.com/yourusername/tourism-management-dbms.git
+cd tourism-management-dbms
+```
+2. Import the database schema using:
+```sql
+source tourism_management.sql;
+```
+3. Start the MySQL server and verify table creation:
+```sql
+SHOW TABLES;
+```
+
+## Database Schema
+The relational model consists of **five primary entities**:
+1. **User**: Stores user details.
+2. **Hotel**: Manages hotel records.
+3. **Booking**: Handles customer bookings.
+4. **Travel Agent**: Stores details of tour operators.
+5. **Login**: Manages authentication.
+
+## Key SQL Queries & Features
+- **Joins**: Retrieves consolidated data across multiple tables.
+- **Triggers**: Automatically updates fields when new bookings occur.
+- **Views**: Generates summarized reports for quick data retrieval.
+- **Stored Procedures**: Automates repetitive database tasks.
+- **Normalization**: Applied **2NF and 3NF** to eliminate redundancy.
+
+## Future Enhancements
+- **Web Integration**: Connect the database with a **Django / Flask** API.
+- **Mobile App Support**: Extend the functionality to **Android / iOS**.
+- **AI-based Recommendations**: Implement ML models for **personalized travel suggestions**.
+
+## License
+This project is licensed under the **MIT License**.
+

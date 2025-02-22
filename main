@@ -1,0 +1,85 @@
+-- Tourism Management Database Schema and Queries
+
+-- Creating Tables
+CREATE TABLE User (
+    UserID INT AUTO_INCREMENT PRIMARY KEY,
+    Name VARCHAR(255),
+    Email VARCHAR(255) UNIQUE,
+    Phone VARCHAR(15),
+    Address TEXT
+);
+
+CREATE TABLE Hotel (
+    HotelID INT AUTO_INCREMENT PRIMARY KEY,
+    Name VARCHAR(255),
+    Location TEXT,
+    Price FLOAT
+);
+
+CREATE TABLE Booking (
+    BookingID INT AUTO_INCREMENT PRIMARY KEY,
+    UserID INT,
+    HotelID INT,
+    BookingDate DATE,
+    FOREIGN KEY (UserID) REFERENCES User(UserID),
+    FOREIGN KEY (HotelID) REFERENCES Hotel(HotelID)
+);
+
+-- Insert Sample Data
+INSERT INTO User (Name, Email, Phone, Address) VALUES
+("John Doe", "john@example.com", "1234567890", "New York"),
+("Jane Smith", "jane@example.com", "0987654321", "Los Angeles");
+
+INSERT INTO Hotel (Name, Location, Price) VALUES
+("Grand Hotel", "Paris", 200.00),
+("Beach Resort", "Maldives", 500.00);
+
+INSERT INTO Booking (UserID, HotelID, BookingDate) VALUES
+(1, 1, '2024-05-10'),
+(2, 2, '2024-06-15');
+
+-- Complex Queries
+-- Fetch all bookings with user and hotel details
+SELECT Booking.BookingID, User.Name AS UserName, Hotel.Name AS HotelName, Booking.BookingDate
+FROM Booking
+JOIN User ON Booking.UserID = User.UserID
+JOIN Hotel ON Booking.HotelID = Hotel.HotelID;
+
+-- Create a view for user booking count
+CREATE OR REPLACE VIEW UserBookings AS
+SELECT User.Name, COUNT(Booking.BookingID) AS TotalBookings
+FROM User
+LEFT JOIN Booking ON User.UserID = Booking.UserID
+GROUP BY User.Name;
+
+-- Trigger to prevent past date bookings
+CREATE TRIGGER before_booking_insert
+BEFORE INSERT ON Booking
+FOR EACH ROW
+BEGIN
+    IF NEW.BookingDate < CURDATE() THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Booking date cannot be in the past';
+    END IF;
+END;
+
+-- Cursor Example
+DELIMITER $$
+CREATE PROCEDURE GetAllUsers()
+BEGIN
+    DECLARE done INT DEFAULT FALSE;
+    DECLARE userName VARCHAR(255);
+    DECLARE cur CURSOR FOR SELECT Name FROM User;
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
+    
+    OPEN cur;
+    read_loop: LOOP
+        FETCH cur INTO userName;
+        IF done THEN
+            LEAVE read_loop;
+        END IF;
+        SELECT userName;
+    END LOOP;
+    CLOSE cur;
+END$$
+DELIMITER ;
